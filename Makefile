@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-Wall -std=c++14 -g
+CXXFLAGS=-Wall -std=c++11 -g
 
 all:
 	$(CXX) $(CXXFLAGS) -o mergesort mergesort.cpp
