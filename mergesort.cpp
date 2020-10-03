@@ -1,14 +1,7 @@
-#include <iostream>
+#include <fstream>
 #include <vector>
-
-void print_vector(std::vector<int> v)
-{
-    int size = static_cast<int>(v.size());
-    for (int i = 0; i < size; i++) {
-        std::cout << v.at(i) << " ";
-    }
-    std::cout << std::endl;
-}
+#include <string>
+#include <sstream>
 
 std::vector<int> merge(std::vector<int> left, std::vector<int> right)
 {
@@ -69,27 +62,57 @@ std::vector<int> mergesort(std::vector<int> input)
         right.push_back(input.at(i));
     }
 
+    // recusively divide
     left = mergesort(left);
     right = mergesort(right);
+    // merge sorted arrays
     sorted = merge(left, right);
 
     return sorted;
 }
 
+
+void write_vector(std::vector<int> v)
+{
+    std::ofstream merge_out;
+    // open the file and set to append the file
+    merge_out.open("merge.out", std::ios_base::app);
+
+    int size = static_cast<int>(v.size());
+    for (int i = 0; i < size; i++) {
+        merge_out << v.at(i) << " ";
+    }
+    merge_out << std::endl;
+    merge_out.close();
+}
+
+
 int main()
 {
+    std::string line;
+    std::vector<int> nums;
 
-    std::vector<int> v;
-    v.push_back(38);
-    v.push_back(27);
-    v.push_back(43);
-    v.push_back(3);
-    v.push_back(9);
-    v.push_back(82);
-    v.push_back(10);
-    print_vector(v);
-    std::cout << std::endl;
-    std::vector<int> v2 = mergesort(v);
-    print_vector(v2);
+    // open the data file
+    std::ifstream data;
+    data.open("data.txt");
+
+    // get the line
+    while (std::getline(data, line)) {
+        // convert line into a input string stream
+        std::istringstream iss(line);
+        int num;
+        // store the numbers in the vector
+        while (iss >> num) {
+            nums.push_back(num);
+        }
+
+        // sort
+        nums = mergesort(nums);
+        // write to file
+        write_vector(nums);
+        // clear the vector
+        nums.clear();
+    }
     return 0;
 }
+
