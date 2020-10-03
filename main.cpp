@@ -17,7 +17,7 @@ std::vector<int> merge(std::vector<int> left, std::vector<int> right)
     while (left.size() > 0 || right.size() > 0) {
         if (left.size() > 0 && right.size() > 0) {
             // compare the heads of the two lists
-            if (left.front() <= right.front()) {
+            if (left.front() >= right.front()) {
                 // push back the smaller value
                 output.push_back(left.front());
                 // erase the value from the orignal vector
