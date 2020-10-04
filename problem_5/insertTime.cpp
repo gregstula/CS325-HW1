@@ -7,6 +7,38 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <chrono>
+#include <iostream>
+#include <random>
+
+// generates a vector with random integers up to size n
+// randomly generated values are between 0 to 10,000
+std::vector<int> generate_vector(int n)
+{
+    std::vector<int> v;
+    std::random_device rd;
+    // mr19937 random number generator engine
+    std::mt19937 rng{rd()};
+    // int distribution keeps random numbers bounded while being evenly distributed
+    std::uniform_int_distribution<int> dist{0, 10000};
+
+    for (int i = 0; i < n; i++) {
+        // push back
+        v.push_back(dist(rng));
+    }
+    return v;
+}
+
+
+// was used for debugging
+void print_vector(std::vector<int> v)
+{
+    for (auto&& i : v) {
+        std::cout << i << " ";
+    }
+    std::cout << std::endl;
+}
+
 
 std::vector<int> insertsort(std::vector<int>& v)
 {
@@ -25,45 +57,32 @@ std::vector<int> insertsort(std::vector<int>& v)
     }
     return v;
 }
-void write_vector(std::vector<int> v)
-{
-    std::ofstream insert_out;
-    // open the file and set to append the file
-    insert_out.open("insert.out", std::ios_base::app);
-
-    int size = static_cast<int>(v.size());
-    for (int i = 0; i < size; i++) {
-        insert_out << v.at(i) << " ";
-    }
-    insert_out << std::endl;
-    insert_out.close();
-}
 
 int main()
 {
-    std::string line;
-    std::vector<int> nums;
+    // create csv file to output for analysis in excel
+    std::ofstream csv_file;
+    csv_file.open("insertTime.csv");
+    // write headers
+    csv_file << "n,time\n";
 
-    // open the data file
-    std::ifstream data;
-    data.open("data.txt");
-
-    // get the line
-    while (std::getline(data, line)) {
-        // convert line into a input string stream
-        std::istringstream iss(line);
-        int num;
-        // store the numbers in the vector
-        while (iss >> num) {
-            nums.push_back(num);
-        }
-
+    for (int n = 5000; n <= 5000*20; n += 5000) {
+        std::vector<int> v =  generate_vector(n);
+        // get time before and after and subtract them
+        auto time1 = std::chrono::high_resolution_clock::now();
         // sort
-        insertsort(nums);
-        // write to file
-        write_vector(nums);
-        // clear the vector
-        nums.clear();
+        insertsort(v);
+        auto time2 = std::chrono::high_resolution_clock::now();
+        // get the duration
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(time2 - time1).count();
+        // output to user
+        std::cout << "n = " << n << " duration: " << duration;
+        // output to csv
+        csv_file << n << "," << duration << "\n";
+        std::cout << std::endl;
     }
-    return 0;
+    // close file
+    csv_file.close();
 }
+
+
