@@ -30,7 +30,7 @@ std::vector<int> generate_vector(int n)
 }
 
 
-// used for debugging
+// was used for debugging
 void print_vector(std::vector<int> v)
 {
     for (auto&& i : v) {
@@ -60,7 +60,7 @@ std::vector<int> merge(std::vector<int> left, std::vector<int> right)
                 right.erase(right.begin());
             }
 
-            // copy the rest of the vector if any
+        // copy the rest of the vector if any
         }
         else if (left.size() > 0) {
             for (auto&& i : left) {
@@ -111,17 +111,29 @@ std::vector<int> mergesort(std::vector<int> input)
 
 int main()
 {
-    for (int n = 5000; n <= 5000*20; n += 5000) {
+    // create csv file to output for analysis in excel
+    std::ofstream csv_file;
+    csv_file.open("mergeTime.csv");
+    // write headers
+    csv_file << "n,time\n";
 
+    for (int n = 5000; n <= 5000*20; n += 5000) {
         std::vector<int> v =  generate_vector(n);
+        // get time before and after and subtract them
         auto time1 = std::chrono::high_resolution_clock::now();
+        // sort
         v = mergesort(v);
         auto time2 = std::chrono::high_resolution_clock::now();
+        // get the duration
         auto duration = std::chrono::duration_cast<std::chrono::microseconds>(time2 - time1).count();
+        // output to user
         std::cout << "n = " << n << " duration: " << duration;
+        // output to csv
+        csv_file << n << "," << duration << "\n";
         std::cout << std::endl;
     }
-
+    // close file
+    csv_file.close();
 }
 
 
