@@ -1,7 +1,7 @@
 #include <fstream>
-#include <vector>
-#include <string>
 #include <sstream>
+#include <string>
+#include <vector>
 
 std::vector<int> merge(std::vector<int> left, std::vector<int> right)
 {
@@ -71,7 +71,6 @@ std::vector<int> mergesort(std::vector<int> input)
     return sorted;
 }
 
-
 void write_vector(std::vector<int> v)
 {
     std::ofstream merge_out;
@@ -85,7 +84,6 @@ void write_vector(std::vector<int> v)
     merge_out << std::endl;
     merge_out.close();
 }
-
 
 int main()
 {
@@ -115,4 +113,3 @@ int main()
     }
     return 0;
 }
-
