@@ -1,8 +1,14 @@
+// Gregory D. Stula
+// CS 325 Fall 2020
+// Homework 1 Problem 4
+// Octobor 3, 2020
+
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <vector>
 
+// merges two sorted vectors in descending order
 std::vector<int> merge(std::vector<int> left, std::vector<int> right)
 {
     std::vector<int> output;
@@ -17,7 +23,7 @@ std::vector<int> merge(std::vector<int> left, std::vector<int> right)
                 left.erase(left.begin());
             }
             else {
-                // push back the smaller value
+                // push back the larger value
                 output.push_back(right.front());
                 // erase the value from the original vector
                 right.erase(right.begin());
@@ -41,6 +47,7 @@ std::vector<int> merge(std::vector<int> left, std::vector<int> right)
     return output;
 }
 
+// merge sort algorithm dependent on the merge subroutine
 std::vector<int> mergesort(std::vector<int> input)
 {
     if (input.size() <= 1) {

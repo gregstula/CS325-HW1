@@ -1,3 +1,8 @@
+// Gregory D. Stula
+// CS 325 Fall 2020
+// Homework 1 Problem 4
+// Octobor 3, 2020
+
 #include <fstream>
 #include <string>
 #include <sstream>
